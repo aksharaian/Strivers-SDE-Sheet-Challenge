@@ -1,24 +1,24 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+
 class Solution {
 public:
-    vector<int> inorderTraversal(TreeNode* root) {
-        vector<int> ans;
-    if (root == NULL) return ans;
-    vector<int> left = inorderTraversal(root->left);
-    ans.insert(ans.end(), left.begin(), left.end());
-    ans.push_back(root->val);
-    vector<int> right = inorderTraversal(root->right);
-    ans.insert(ans.end(), right.begin(), right.end());
-    return ans;
-    }
+//recursive call for inorder traversal
+    void inorder(TreeNode* root, vector<int>&v){
+//check if root is null then retrun
+         if(!root){
+         return;
+         }
+//trvaverse for the left node
+           inorder(root->left,v);
+//push the data of the current nodes
+           v.push_back(root->val);
+//traverse for right node
+           inorder(root->right,v);
+   }
+//driver code
+ vector<int> inorderTraversal(TreeNode* root) {
+        vector<int>v;
+//recursion call
+        inorder(root,v);
+        return v;
+        }
 };
