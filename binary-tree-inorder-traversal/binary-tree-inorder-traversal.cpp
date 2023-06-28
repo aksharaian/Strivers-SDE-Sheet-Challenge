@@ -1,24 +1,59 @@
-
 class Solution {
 public:
-//recursive call for inorder traversal
-    void inorder(TreeNode* root, vector<int>&v){
-//check if root is null then retrun
-         if(!root){
-         return;
-         }
-//trvaverse for the left node
-           inorder(root->left,v);
-//push the data of the current nodes
-           v.push_back(root->val);
-//traverse for right node
-           inorder(root->right,v);
-   }
-//driver code
- vector<int> inorderTraversal(TreeNode* root) {
-        vector<int>v;
-//recursion call
-        inorder(root,v);
-        return v;
+    vector<int> ans;
+    
+    vector<int> inorderTraversal(TreeNode* root) {
+        TreeNode* cur = root;
+        TreeNode* predecessor;
+        
+        while(cur) {
+            if (cur->left == NULL) {
+                visit(cur);
+                cur = cur->right;
+            } else {
+                predecessor = find_predecessor(cur);
+                
+                // build threaded binary tree
+                if (predecessor->right == NULL) {
+                    predecessor->right = cur;
+                    cur = cur->left;
+                } else {
+                    // destroy threaded binary tree 
+                    //      because it has been visited.
+                    
+                    // the left sub-tree is visited.
+                    predecessor->right = NULL;
+                    visit(cur);
+                    
+                    // visit right subtree.
+                    cur = cur->right;
+                }
+            }
         }
+        
+        return ans;
+    }
+    
+    
+    inline void visit(TreeNode* p) {
+        ans.push_back(p->val);
+    }
+    
+    
+    /*
+     *  search predeceesor of root.
+     *      i.e. search root's left subtree.
+     */
+    inline TreeNode* find_predecessor(TreeNode* root) {
+        TreeNode* p = root->left;
+        
+        // The tree might be threaded binary tree.
+        //     Thus the 2nd condition avoids searching successor of root.
+        //          i.e. avoids searching root's right subtree.
+        while(p->right && p->right != root) {
+            p = p->right;
+        }
+        
+        return p;
+    }
 };
