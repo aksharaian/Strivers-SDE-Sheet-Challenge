@@ -1,0 +1,18 @@
+bool chk(TreeNode<int>*node,int x, vector<int>&v)
+{
+	if(!node) return false;
+	v.push_back(node->data);
+	if(chk(node->left,x,v) or chk(node->right,x,v))
+	return true;
+	if(node->data ==x) return true;
+	v.pop_back();
+	return false;
+}
+
+vector<int> pathInATree(TreeNode<int> *root, int x)
+{
+	vector<int> v;
+    if(!root) return {};
+	chk(root,x,v);
+	return v;
+}
